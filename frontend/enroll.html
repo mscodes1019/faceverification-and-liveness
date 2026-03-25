@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FaceAuth — Enrollment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- SCREEN 1 — WELCOME -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-hero">
+    <img src="assets/bg_heroIllustration_welcome.png" onerror="this.style.display='none'" alt="" />
+  </div>
+  <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:48px 24px;">
+    <div class="welcome-box">
+      <p class="headline">Face Enrollment Demo</p>
+      <p class="subheading1" style="color:#555; margin-bottom:4px;">
+        This demo captures a face image, creates a face template, and shows the enrollment result.
+      </p>
+      <div class="welcome-btns">
+        <button class="btn btn-primary" onclick="goTo('screen-consent')">Get started</button>
+        <button class="btn btn-outline" onclick="goTo('screen-login','manage')">Manage profile</button>
+      </div>
+      <div class="welcome-footer">
+        <p class="caption">Demo workflow: Consent, Capture, Enrollment</p>
+        <p class="caption">Privacy notice available on request</p>
+        <p class="caption" style="margin-top:8px;">Internal prototype for enrollment review</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2 — CONSENT -->
+<div id="screen-consent" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goTo('screen-welcome')">&#8592; Back</button>
+    <span class="nav-title">Face enrollment consent</span>
+    <div></div>
+  </div>
+  <img src="assets/bg_heroIllustration_request.png" class="consent-hero"
+       onerror="this.style.background='#002C55'; this.style.height='120px'" alt="" />
+  <div class="consent-content">
+
+    <div class="consent-card">
+      <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;">
+        <div style="flex:2; min-width:220px;">
+          <p class="title1">What is a face template?</p>
+          <p class="subheading1" style="margin-bottom:16px;">
+            A face template is a unique set of numbers that represent the distinctive features of your face.
+          </p>
+          <div class="row-icon">
+            <img src="assets/icon_camera.png" onerror="imgFallback(this,'📷')" alt="" />
+            <p class="subheading1">If you choose to enroll, you'll take a few photos of your face today to create one.</p>
+          </div>
+          <div class="row-icon">
+            <img src="assets/icon_lock.png" onerror="imgFallback(this,'🔒')" alt="" />
+            <p class="subheading1">Using face templates helps verify identity quickly and consistently in this demo workflow.</p>
+          </div>
+          <p class="title1" style="margin-top:24px;">What information gets stored?</p>
+          <p class="subheading1">Only your face template gets stored. No one has access to your face template.</p>
+        </div>
+        <div style="flex:1; min-width:160px; min-height:160px;">
+          <img src="assets/img_faceTemp_l.png" class="facetemplate-img" onerror="imgFallback(this,'🫥')" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <div class="consent-card">
+      <p class="title1">We protect your privacy at every step</p>
+      <div class="privacy-grid">
+        <div class="privacy-item">
+          <img src="assets/img_shield.png" onerror="imgFallback(this,'🛡️')" alt="" />
+          <div>
+            <p class="subheading2">Face templates are used only for enrollment demonstration</p>
+            <p class="body1">Your face template isn't shared or used outside this approved demo purpose.</p>
+          </div>
+        </div>
+        <div class="privacy-item">
+          <img src="assets/img_lock.png" onerror="imgFallback(this,'🔐')" alt="" />
+          <div>
+            <p class="subheading2">Face templates are securely encrypted</p>
+            <p class="body1">Your face template is encrypted following cloud security standards ISO 27018 and SOC 1, 2, 3.</p>
+          </div>
+        </div>
+        <div class="privacy-item">
+          <img src="assets/img_clock.png" onerror="imgFallback(this,'⏰')" alt="" />
+          <div>
+            <p class="subheading2">Retention follows the selected enrollment policy</p>
+            <p class="body1">Raw photos are discarded unless retention is explicitly enabled.</p>
+          </div>
+        </div>
+        <div class="privacy-item">
+          <img src="assets/img_bin.png" onerror="imgFallback(this,'🗑️')" alt="" />
+          <div>
+            <p class="subheading2">Delete your data anytime</p>
+            <p class="body1">You can change your mind anytime and delete your face template.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="consent-card">
+      <p class="title1">Ready to run enrollment?</p>
+      <p class="subheading1" style="margin-bottom:16px;">
+        Participation is optional. If you don't want to enroll now, you can close this demo and return later.
+      </p>
+      <div style="display:grid; gap:10px; margin-bottom:16px;">
+        <label class="body1" style="display:flex; gap:10px; align-items:flex-start; cursor:pointer;">
+          <input type="checkbox" id="consent-checkbox" onchange="syncConsentChoices()" />
+          <span>I consent to face template enrollment for this demo.</span>
+        </label>
+        <label class="body1" style="display:flex; gap:10px; align-items:flex-start; cursor:pointer;">
+          <input type="checkbox" id="retention-checkbox" onchange="syncConsentChoices()" />
+          <span>Keep raw image after template generation (optional retention).</span>
+        </label>
+      </div>
+      <div class="consent-btns">
+        <button class="btn btn-primary" id="consent-continue-btn" disabled onclick="proceedFromConsent()">Yes, create my face template</button>
+        <button class="btn btn-outline" onclick="showDeclineModal()">No, don't create my face template</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCREEN 3 — LOGIN -->
+<div id="screen-login" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="loginBack()">&#8592; Back</button>
+    <span class="nav-title" id="login-nav-title">Your details</span>
+    <div></div>
+  </div>
+  <div class="login-content">
+    <p class="caption" id="login-step-label">Step 1 of 3</p>
+    <p class="headline" style="margin-top:8px;" id="login-headline">Tell us who you are</p>
+    <p class="subheading1" style="margin-bottom:32px;" id="login-sub">
+      Enter your full name to get started. A User ID will be generated automatically after capture.
+    </p>
+    <div class="form-field">
+      <label>Full Name</label>
+      <input type="text" id="input-name" placeholder="e.g. John Adeyemi" oninput="validateLogin()" />
+    </div>
+    <div style="display:flex; gap:12px; margin-top:8px;">
+      <button class="btn btn-blue" id="login-next-btn" disabled onclick="loginNext()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4 — INSTRUCTION -->
+<div id="screen-instruction" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="showLeaveModal()">&#8592; Back</button>
+    <span class="nav-title">Tips for a good photo</span>
+    <div></div>
+  </div>
+  <div class="instruction-content">
+    <p class="caption">Step 2 of 3</p>
+    <p class="headline" style="margin-top:8px;">Tips for creating a face template</p>
+    <p class="subheading1">
+      The photo will be taken <strong>automatically</strong> once your face is detected
+      in position — no button needed. These photos will only be used to create your
+      face template and will not be stored.
+    </p>
+    <div class="tips-grid">
+      <div class="tip-item">
+        <img src="assets/img_tip_faceVisible.png" onerror="this.outerHTML='<div class=tip-placeholder>😊</div>'" alt="" />
+        <p class="subheading1">The camera works best when your face is fully visible and the photos show how you look on a typical day.</p>
+      </div>
+      <div class="tip-item">
+        <img src="assets/img_tip_lookAhead.png" onerror="this.outerHTML='<div class=tip-placeholder>👀</div>'" alt="" />
+        <p class="subheading1">Look straight ahead and center your face in the oval guide.</p>
+      </div>
+      <div class="tip-item">
+        <img src="assets/img_tip_onlyPerson.png" onerror="this.outerHTML='<div class=tip-placeholder>🧍</div>'" alt="" />
+        <p class="subheading1">Make sure you're the only person in view.</p>
+      </div>
+    </div>
+    <div style="margin-bottom:24px;">
+      <button class="btn btn-blue" onclick="goTo('screen-capture')">Create my face template now</button>
+    </div>
+    <p class="subheading1">
+      Some accessories can obscure parts of your face, such as a cap, sunglasses, or a face mask,
+      so you might need to adjust these while taking the photos.
+    </p>
+  </div>
+</div>
+
+<!-- SCREEN 5 — CAPTURE -->
+<div id="screen-capture" class="screen">
+  <div class="capture-nav">
+    <button class="nav-back" onclick="showLeaveModal()">&#8592; Cancel</button>
+    <span id="capture-status">POSITION YOUR FACE IN THE OVAL</span>
+    <div></div>
+  </div>
+  <div class="quality-panel">
+    <div class="quality-pill"><div class="q-dot" id="q-face"></div><span id="q-face-label">FACE</span></div>
+    <div class="quality-pill"><div class="q-dot" id="q-light"></div><span id="q-light-label">LIGHT</span></div>
+    <div class="quality-pill"><div class="q-dot" id="q-pos"></div><span id="q-pos-label">POSITION</span></div>
+  </div>
+  <div class="camera-container">
+    <div class="oval-wrapper" id="oval-wrapper">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="scan-line"></div>
+      <div class="countdown-number" id="countdown-number"></div>
+    </div>
+    <p class="status-below" id="status-below">Center your face inside the oval</p>
+    <div class="progress-dots">
+      <div class="pdot" id="pdot-0"></div>
+      <div class="pdot" id="pdot-1"></div>
+      <div class="pdot" id="pdot-2"></div>
+    </div>
+  </div>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <div class="capture-bottom">
+    <p class="capture-hint">Photo is taken automatically when your face is detected — no button needed</p>
+  </div>
+</div>
+
+<!-- SCREEN 6 — RECEIPT -->
+<div id="screen-receipt" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goTo('screen-welcome'); resetAll()">&#8592; Home</button>
+    <span class="nav-title">Enrollment complete</span>
+    <div></div>
+  </div>
+  <div class="receipt-content">
+    <p class="caption">Step 3 of 3</p>
+    <div class="receipt-headline">
+      <img src="assets/icon_check.png" onerror="imgFallback(this,'✅')" alt="" />
+      <p class="headline">You're enrolled!</p>
+    </div>
+    <p class="subheading1" style="margin-bottom:24px;">
+      Your enrollment has been completed successfully for this demo.
+    </p>
+    <div class="receipt-grid">
+      <div class="receipt-left">
+        <p class="body2 blue-heading" style="margin-bottom:8px;">Summary of data being stored</p>
+        <div class="receipt-section">
+          <div style="display:flex; gap:16px; align-items:center; margin-bottom:16px;">
+            <div style="flex:1;">
+              <p class="subheading2" style="margin-bottom:6px;">Your face template</p>
+              <p class="body1">Used for identity verification in this enrollment workflow</p>
+            </div>
+            <img src="assets/img_faceTemp_s.png" style="width:80px;height:80px;object-fit:contain;"
+                 onerror="imgFallback(this,'🫥')" alt="" />
+          </div>
+          <div class="receipt-row">
+            <img src="assets/icon_key.png" onerror="imgFallback(this,'🔑')" alt="" />
+            <div><p class="body2">Access control</p><p class="body1">Restricted to authorized system roles</p></div>
+          </div>
+          <div class="receipt-row">
+            <img src="assets/icon_timer.png" onerror="imgFallback(this,'⏱️')" alt="" />
+            <div>
+              <p class="body2">Retention policy</p>
+              <p class="body1">Raw image follows your retention choice. Template remains until removed.</p>
+            </div>
+          </div>
+        </div>
+        <div class="shade-box">
+          <p class="body2" style="margin-bottom:6px;">Demo note</p>
+          <p class="body1">Use this portal to re-run enrollment, compare outcomes, or remove a test profile.</p>
+        </div>
+        <div id="receipt-details" class="receipt-section"
+             style="font-family:var(--mono);font-size:12px;color:#666;line-height:1.8;"></div>
+      </div>
+      <div class="receipt-right">
+        <p class="body2 blue-heading" style="margin-bottom:8px;">Enrollment checklist</p>
+        <div class="bullet-item"><p class="body1">•</p><p class="body1">Your face template is linked to the generated user profile</p></div>
+        <div class="bullet-item"><p class="body1">•</p><p class="body1">Enrollment is complete and ready for profile management</p></div>
+        <div class="bullet-item"><p class="body1">•</p><p class="body1">You can return anytime to re-enroll or remove the profile</p></div>
+        <div class="receipt-section" style="margin-top:16px;">
+          <p class="body2" style="margin-bottom:8px;">Recommended next action</p>
+          <p class="body1">Review the enrollment details and proceed with your next test profile.</p>
+        </div>
+        <div class="receipt-section" style="margin-top:16px;">
+          <p class="body2" style="margin-bottom:8px;">Verify this enrollment</p>
+          <p class="body1" style="margin-bottom:12px;">Run a liveness check first, then verification executes automatically.</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+            <button class="btn btn-blue" type="button" onclick="goToLivenessPage()">Go to liveness check</button>
+          </div>
+        </div>
+        <p class="body2 blue-heading" style="margin-top:16px;margin-bottom:8px;">If results need review</p>
+        <p class="body1">
+          If enrollment fails, retry with stable lighting and a centered face.
+          If needed, remove the profile and re-enroll to compare behavior.<br/><br/>
+          Keep the User ID and Person ID for troubleshooting logs.
+        </p>
+      </div>
+    </div>
+    <div style="margin-top:32px;">
+      <button class="btn btn-blue" onclick="goTo('screen-welcome'); resetAll()">Back to home</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 7 — LIVENESS + VERIFY -->
+<div id="screen-liveness" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goTo('screen-receipt')">&#8592; Back</button>
+    <span class="nav-title">Liveness check</span>
+    <div></div>
+  </div>
+  <div class="receipt-content">
+    <p class="caption">Verification flow</p>
+    <p class="headline" style="margin-top:8px;">Run liveness, then verify</p>
+    <p class="subheading1" style="margin-bottom:16px;">
+      Click the button below. The system runs liveness first and, if passed, automatically verifies identity.
+    </p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+      <button class="btn btn-blue" type="button" onclick="verifyUsingCamera()">Start liveness check</button>
+    </div>
+    <div id="verify-result" class="shade-box" style="margin-top:10px; display:none;"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-decline">
+  <div class="modal-box">
+    <p class="modal-title">Got it</p>
+    <p class="modal-msg">You won't be enrolled in this demo right now. If you change your mind, you can come back to this screen anytime.</p>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="closeModal('modal-decline'); goTo('screen-welcome')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-leave">
+  <div class="modal-box">
+    <p class="modal-title">Leave without saving?</p>
+    <p class="modal-msg">You won't be enrolled, and your information won't be saved.</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-leave')">No, keep enrolling</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-leave'); cancelEnrollment()">Yes, leave</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-error">
+  <div class="modal-box">
+    <p class="modal-title">Something went wrong.</p>
+    <p class="modal-msg" id="modal-error-msg">Sorry, we couldn't complete your enrollment.</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-error'); goTo('screen-welcome'); resetAll()">Try again later</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-error'); retryCapture()">Try again</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-verify-live">
+  <div class="modal-box" style="max-width:560px; padding:20px;">
+    <p class="modal-title" style="margin-bottom:8px;">Live verification capture</p>
+    <p class="modal-msg" id="verify-live-msg" style="margin-bottom:12px;">Look at the camera. Auto capture starts in 2s...</p>
+    <div id="liveness-sdk-host" style="width:100%; min-height:360px; border-radius:8px; overflow:hidden; margin-bottom:14px; background:#000;"></div>
+    <div style="width:100%; background:#000; border-radius:8px; overflow:hidden; margin-bottom:14px;">
+      <video id="verify-live-video" autoplay muted playsinline style="display:block; width:100%; max-height:360px; object-fit:cover; transform: scaleX(-1);"></video>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" type="button" onclick="closeVerifyLiveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-label" id="loading-label">ENROLLING...</p>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

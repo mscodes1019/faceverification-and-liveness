@@ -1,0 +1,9 @@
+{
+  "name": "azure-ai-vision-face-ui",
+  "description": "Azure AI Vision Face UI Web SDK",
+  "main": "FaceLivenessDetector.js",
+  "types": "types/index.d.ts",
+  "homepage": "https://github.com/Azure-Samples/azure-ai-vision-sdk",
+  "devDependencies": {},
+  "version": "0.18.0-beta.1"
+}

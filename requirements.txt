@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+gunicorn
+python-dotenv
+azure-cognitiveservices-vision-face
+msrest
+azure-storage-blob
+azure-core
+pydantic
+requests

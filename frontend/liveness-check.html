@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FaceAuth - Liveness Check</title>
+  <style>
+    :root {
+      --bg: #002c55;
+      --text: #1f1f1f;
+      --muted: #666;
+      --blue: #0078d4;
+      --panel: #f8f8f8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Segoe UI, Arial, sans-serif;
+      background: #fff;
+      color: var(--text);
+    }
+    .nav {
+      background: var(--bg);
+      color: #fff;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    .nav button {
+      background: transparent;
+      color: #fff;
+      border: 0;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .caption { color: var(--muted); font-size: 12px; }
+    .title { font-size: 30px; margin: 8px 0 8px; }
+    .sub { color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+    .btn {
+      background: var(--blue);
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .panel {
+      background: var(--panel);
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 14px;
+    }
+    .runtime-warning {
+      display: none;
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #cfa74a;
+      background: #fff4d6;
+      color: #5f4300;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .runtime-warning.active {
+      display: block;
+    }
+    #status-text { font-family: Consolas, monospace; font-size: 12px; }
+    #liveness-container {
+      width: 100%;
+      max-width: 720px;
+      min-height: 78vh;
+      margin-top: 14px;
+      background: #f1f1f1;
+      border-radius: 8px;
+      overflow: visible;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <button onclick="window.location.href='/enroll.html'">&#8592; Back</button>
+    <span>Liveness check</span>
+    <div style="width:42px;"></div>
+  </div>
+
+  <div class="page" id="screen-liveness-page">
+    <p class="caption">Verification flow</p>
+    <p class="title">Run liveness, then verify</p>
+    <p class="sub" id="page-sub">Starting point for liveness and verification.</p>
+
+
+    <div id="instructions-panel" class="panel" style="margin-bottom:18px;">
+      <div style="font-size:18px;font-weight:600;margin-bottom:8px;">Liveness Check Instructions</div>
+      <ul style="font-size:14px;line-height:1.7;margin:0 0 12px 18px;padding:0;">
+        <li>Make sure your face is clearly visible and well-lit.</li>
+        <li>Remove glasses, masks, or anything covering your face.</li>
+        <li>Be ready to smile and turn your head as prompted.</li>
+        <li>Click <b>Continue</b> to start the liveness check.</li>
+      </ul>
+      <button class="btn" type="button" id="continue-btn">Continue</button>
+    </div>
+
+    <button class="btn" type="button" id="start-liveness-btn" style="display:none;">Start liveness check</button>
+
+    <div id="runtime-warning" class="runtime-warning" role="alert"></div>
+
+    <div class="panel" id="status-box">
+      <div id="status-text">Ready.</div>
+    </div>
+
+
+    <div id="liveness-container"></div>
+
+    <div id="result-box" class="panel" style="display:none;"></div>
+  </div>
+
+  <script type="module" src="js/liveness-page.js?v=20260320-5"></script>
+</body>
+</html>
+

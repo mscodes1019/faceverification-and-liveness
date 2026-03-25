@@ -1,0 +1,4 @@
+# For Azure App Service: run with Gunicorn and Uvicorn worker
+# You can set this as the startup command in Azure App Service configuration
+
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
