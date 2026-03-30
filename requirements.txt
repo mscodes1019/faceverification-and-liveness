@@ -4,7 +4,8 @@ gunicorn
 python-dotenv
 azure-cognitiveservices-vision-face
 msrest
-azure-storage-blob
 azure-core
 pydantic
 requests
+azure-identity>=1.13.0
+azure-storage-blob>=12.25.0
